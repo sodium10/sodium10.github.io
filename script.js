@@ -152,6 +152,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ── Interactive Project Filter ──
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.projects-grid .project-card');
+
+    if (filterButtons.length > 0 && projectCards.length > 0) {
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    if (filter === 'all' || category === filter) {
+                        card.classList.remove('filter-hidden');
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(12px)';
+                        setTimeout(() => {
+                            card.style.transition = 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 50);
+                    } else {
+                        card.classList.add('filter-hidden');
+                    }
+                });
+            });
+        });
+    }
+
     // ── Initial check for elements already in view ──
     handleNavScroll();
     updateActiveNav();

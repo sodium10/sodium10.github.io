@@ -23,7 +23,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="style.css?v=6.0">
+    <link rel="stylesheet" href="style.css?v=7.0">
 </head>
 
 <body>
@@ -501,129 +501,248 @@
                 <h2 class="section-title">Featured <span class="text-accent">Projects</span></h2>
                 <div class="section-line"></div>
             </div>
+            <!-- Project Filter Controls -->
+            <div class="projects-filter-bar" data-animate="fade-up">
+                <button class="filter-btn active" data-filter="all">
+                    <span>All Systems</span>
+                    <span class="filter-count">4</span>
+                </button>
+                <button class="filter-btn" data-filter="web">
+                    <span>Web &amp; Production</span>
+                    <span class="filter-count">2</span>
+                </button>
+                <button class="filter-btn" data-filter="ai">
+                    <span>AI &amp; Vision</span>
+                    <span class="filter-count">1</span>
+                </button>
+                <button class="filter-btn" data-filter="fullstack">
+                    <span>Full-Stack</span>
+                    <span class="filter-count">1</span>
+                </button>
+            </div>
+
             <div class="projects-grid">
                 <!-- HomeNet BD -->
-                <div class="project-card project-card-featured" data-animate="fade-up">
-                    <div class="project-image">
-                        <img src="homenet.png" alt="HomeNet BD - AI Property Marketplace" loading="lazy">
-                        <div class="project-overlay">
-                            <a href="https://www.homenetbd.com/" target="_blank" rel="noopener" class="project-link-icon"
-                                aria-label="Visit Site">
-                                <i class="fas fa-external-link-alt"></i>
-                            </a>
+                <div class="project-card" data-category="web" data-animate="fade-up">
+                    <div class="project-card-header">
+                        <div class="project-sys-id">
+                            <i class="fas fa-terminal"></i>
+                            <span>SYS.PRJ_01</span>
+                        </div>
+                        <span class="project-status-chip status-prod">
+                            <span class="status-pulse-dot"></span> Production Live
+                        </span>
+                    </div>
+                    <div class="project-browser-frame">
+                        <div class="browser-controls">
+                            <span class="browser-dot dot-red"></span>
+                            <span class="browser-dot dot-yellow"></span>
+                            <span class="browser-dot dot-green"></span>
+                            <span class="browser-address">https://www.homenetbd.com/</span>
+                        </div>
+                        <div class="project-image">
+                            <img src="homenet.png" alt="HomeNet BD - AI Property Marketplace" loading="lazy">
+                            <div class="project-overlay">
+                                <a href="https://www.homenetbd.com/" target="_blank" rel="noopener" class="project-link-icon"
+                                    aria-label="Visit Site">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div class="project-content">
-                        <span class="project-label">Featured Web App &bull; Fazesoft</span>
+                        <div class="project-meta-top">
+                            <span class="project-label">Flagship Web App &bull; Fazesoft</span>
+                            <span class="project-year">2024</span>
+                        </div>
                         <h3 class="project-title">HomeNet &mdash; AI Property Marketplace</h3>
                         <p class="project-desc">
-                            AI-assisted real estate web application developed at Fazesoft. Features automated AI property valuations, verified listings for buy, rent, and short-let across Bangladesh, live market intelligence charts, and an owner listing hub.
+                            AI-assisted real estate web application developed at Fazesoft. Features automated AI property valuations, verified listings across Bangladesh, live market analytics, and an interactive owner listing portal.
                         </p>
                         <div class="project-tech">
                             <span>React.js</span>
                             <span>JavaScript</span>
                             <span>AI Valuation</span>
-                            <span>Market Analytics</span>
-                            <span>Responsive Design</span>
+                            <span>Analytics</span>
+                            <span>Responsive</span>
                         </div>
-                        <a href="https://www.homenetbd.com/" target="_blank" rel="noopener" class="project-visit-btn">
-                            <span>Visit Live Site</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <!-- Mark Design Engineering Ltd. -->
-                <div class="project-card" data-animate="fade-up" data-delay="100">
-                    <div class="project-image">
-                        <div class="project-image-placeholder">
-                            <i class="fas fa-building"></i>
-                        </div>
-                        <div class="project-overlay">
-                            <a href="https://markdesignbd.com/" target="_blank" rel="noopener" class="project-link-icon"
-                                aria-label="Visit Site">
+                        <div class="project-card-footer">
+                            <a href="https://www.homenetbd.com/" target="_blank" rel="noopener" class="project-visit-btn">
+                                <span>Visit Live Site</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="https://www.homenetbd.com/" target="_blank" rel="noopener" class="project-direct-icon" aria-label="Open Site">
                                 <i class="fas fa-external-link-alt"></i>
                             </a>
                         </div>
                     </div>
-                    <div class="project-content">
-                        <span class="project-label">Client Project</span>
-                        <h3 class="project-title">Mark Design Engineering Ltd.</h3>
-                        <p class="project-desc">
-                            Full website development for an engineering company. Built with WordPress & Elementor
-                            featuring a modern, responsive design with smooth animations, portfolio showcase,
-                            service pages, and contact integration. Tagline: "You Dream It, We Build It."
-                        </p>
-                        <div class="project-tech">
-                            <span>WordPress</span>
-                            <span>Elementor</span>
-                            <span>Custom CSS</span>
-                            <span>Responsive</span>
-                        </div>
-                        <a href="https://markdesignbd.com/" target="_blank" rel="noopener" class="project-visit-btn">
-                            <span>Visit Live Site</span>
-                            <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
                 </div>
-                <div class="project-card" data-animate="fade-up" data-delay="100">
-                    <div class="project-image">
-                        <img src="flood-detection.jpg" alt="Flood & Disaster Detection using Computer Vision" loading="lazy">
-                        <div class="project-overlay">
-                            <a href="https://github.com/sodium10/flood-detetion-using-CV" target="_blank" rel="noopener" class="project-link-icon"
-                                aria-label="View on GitHub">
-                                <i class="fab fa-github"></i>
-                            </a>
+
+                <!-- Flood & Disaster Detection -->
+                <div class="project-card" data-category="ai" data-animate="fade-up" data-delay="100">
+                    <div class="project-card-header">
+                        <div class="project-sys-id">
+                            <i class="fas fa-terminal"></i>
+                            <span>SYS.PRJ_02</span>
+                        </div>
+                        <span class="project-status-chip status-ai">
+                            <span class="status-pulse-dot"></span> AI Model Benchmarked
+                        </span>
+                    </div>
+                    <div class="project-browser-frame">
+                        <div class="browser-controls">
+                            <span class="browser-dot dot-red"></span>
+                            <span class="browser-dot dot-yellow"></span>
+                            <span class="browser-dot dot-green"></span>
+                            <span class="browser-address">github.com/flood-detetion-using-CV</span>
+                        </div>
+                        <div class="project-image">
+                            <img src="flood-detection.jpg" alt="Flood & Disaster Detection using Computer Vision" loading="lazy">
+                            <div class="project-overlay">
+                                <a href="https://github.com/sodium10/flood-detetion-using-CV" target="_blank" rel="noopener" class="project-link-icon"
+                                    aria-label="View on GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div class="project-content">
-                        <span class="project-label">AI / Computer Vision</span>
+                        <div class="project-meta-top">
+                            <span class="project-label">AI &bull; Computer Vision</span>
+                            <span class="project-year">2024</span>
+                        </div>
                         <h3 class="project-title">Flood &amp; Disaster Detection &mdash; YOLOv12</h3>
                         <p class="project-desc">
-                            Intelligent real-time disaster monitoring and rescue victim detection system powered by YOLOv12. Evaluates flood hazard risk levels and pinpoints stranded individuals to assist emergency search and rescue teams (90.9% mAP@50).
+                            Intelligent real-time disaster hazard evaluation and aerial rescue victim detection engine powered by YOLOv12. Pinpoints stranded victims to assist emergency operations with high accuracy.
                         </p>
                         <div class="project-tech">
                             <span>Python</span>
                             <span>YOLOv12</span>
                             <span>PyTorch</span>
                             <span>Computer Vision</span>
-                            <span>Deep Learning</span>
+                            <span>OpenCV</span>
                         </div>
-                        <a href="https://github.com/sodium10/flood-detetion-using-CV" target="_blank" rel="noopener" class="project-visit-btn">
-                            <span>View on GitHub</span>
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="project-card" data-animate="fade-up" data-delay="200">
-                    <div class="project-image">
-                        <div class="project-image-placeholder placeholder-gradient-3">
-                            <i class="fas fa-utensils"></i>
-                        </div>
-                        <div class="project-overlay">
-                            <a href="https://github.com/aka-abrar-10/aoop_FoodFrenzy" target="_blank" rel="noopener" class="project-link-icon"
-                                aria-label="View on GitHub">
+                        <div class="project-card-footer">
+                            <a href="https://github.com/sodium10/flood-detetion-using-CV" target="_blank" rel="noopener" class="project-visit-btn">
+                                <span>View on GitHub</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="https://github.com/sodium10/flood-detetion-using-CV" target="_blank" rel="noopener" class="project-direct-icon" aria-label="Open Repo">
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
                     </div>
+                </div>
+
+                <!-- FoodFrenzy Platform -->
+                <div class="project-card" data-category="fullstack" data-animate="fade-up" data-delay="150">
+                    <div class="project-card-header">
+                        <div class="project-sys-id">
+                            <i class="fas fa-terminal"></i>
+                            <span>SYS.PRJ_03</span>
+                        </div>
+                        <span class="project-status-chip status-git">
+                            <span class="status-pulse-dot"></span> Open Source Repo
+                        </span>
+                    </div>
+                    <div class="project-browser-frame">
+                        <div class="browser-controls">
+                            <span class="browser-dot dot-red"></span>
+                            <span class="browser-dot dot-yellow"></span>
+                            <span class="browser-dot dot-green"></span>
+                            <span class="browser-address">github.com/aka-abrar-10/aoop_FoodFrenzy</span>
+                        </div>
+                        <div class="project-image">
+                            <img src="foodfrenzy.jpg" alt="FoodFrenzy - Online Food Delivery Platform" loading="lazy">
+                            <div class="project-overlay">
+                                <a href="https://github.com/aka-abrar-10/aoop_FoodFrenzy" target="_blank" rel="noopener" class="project-link-icon"
+                                    aria-label="View on GitHub">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                     <div class="project-content">
-                        <span class="project-label">Full-Stack Web App</span>
-                        <h3 class="project-title">FoodFrenzy &mdash; Food Delivery Platform</h3>
+                        <div class="project-meta-top">
+                            <span class="project-label">Full-Stack Web System</span>
+                            <span class="project-year">2024</span>
+                        </div>
+                        <h3 class="project-title">FoodFrenzy &mdash; Delivery Platform</h3>
                         <p class="project-desc">
-                            Full-stack online food delivery application built with Spring Boot, Java, and MySQL.
-                            Features customer authentication, categorized multi-cuisine menu browsing, real-time order placement &amp; tracking, and an administrative dashboard for product and inventory control.
+                            Full-stack food delivery application built with Java, Spring Boot, and MySQL. Features customer authentication, interactive menu browsing, live order tracking, and administrative inventory management.
                         </p>
                         <div class="project-tech">
                             <span>Java</span>
                             <span>Spring Boot</span>
                             <span>MySQL</span>
-                            <span>Thymeleaf</span>
                             <span>JavaScript</span>
+                            <span>Thymeleaf</span>
                         </div>
-                        <a href="https://github.com/aka-abrar-10/aoop_FoodFrenzy" target="_blank" rel="noopener" class="project-visit-btn">
-                            <span>View on GitHub</span>
-                            <i class="fab fa-github"></i>
-                        </a>
+                        <div class="project-card-footer">
+                            <a href="https://github.com/aka-abrar-10/aoop_FoodFrenzy" target="_blank" rel="noopener" class="project-visit-btn">
+                                <span>View on GitHub</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="https://github.com/aka-abrar-10/aoop_FoodFrenzy" target="_blank" rel="noopener" class="project-direct-icon" aria-label="Open Repo">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mark Design Engineering Ltd. -->
+                <div class="project-card" data-category="web" data-animate="fade-up" data-delay="200">
+                    <div class="project-card-header">
+                        <div class="project-sys-id">
+                            <i class="fas fa-terminal"></i>
+                            <span>SYS.PRJ_04</span>
+                        </div>
+                        <span class="project-status-chip status-client">
+                            <span class="status-pulse-dot"></span> Client Delivered
+                        </span>
+                    </div>
+                    <div class="project-browser-frame">
+                        <div class="browser-controls">
+                            <span class="browser-dot dot-red"></span>
+                            <span class="browser-dot dot-yellow"></span>
+                            <span class="browser-dot dot-green"></span>
+                            <span class="browser-address">https://markdesignbd.com/</span>
+                        </div>
+                        <div class="project-image">
+                            <img src="markdesign.jpg" alt="Mark Design Engineering Ltd. Corporate Web Portal" loading="lazy">
+                            <div class="project-overlay">
+                                <a href="https://markdesignbd.com/" target="_blank" rel="noopener" class="project-link-icon"
+                                    aria-label="Visit Site">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <div class="project-meta-top">
+                            <span class="project-label">Corporate Client Portal</span>
+                            <span class="project-year">2024</span>
+                        </div>
+                        <h3 class="project-title">Mark Design Engineering Ltd.</h3>
+                        <p class="project-desc">
+                            Full website engineering for a structural &amp; architectural firm. Designed with responsive layouts, smooth modern animations, dynamic service portfolios, and direct client consultation scheduling.
+                        </p>
+                        <div class="project-tech">
+                            <span>WordPress</span>
+                            <span>Elementor</span>
+                            <span>Custom CSS</span>
+                            <span>Responsive</span>
+                            <span>SEO</span>
+                        </div>
+                        <div class="project-card-footer">
+                            <a href="https://markdesignbd.com/" target="_blank" rel="noopener" class="project-visit-btn">
+                                <span>Visit Live Site</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="https://markdesignbd.com/" target="_blank" rel="noopener" class="project-direct-icon" aria-label="Open Site">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -832,7 +951,7 @@
         </div>
     </footer>
 
-    <script src="script.js?v=6.0"></script>
+    <script src="script.js?v=7.0"></script>
 </body>
 
 </html>
