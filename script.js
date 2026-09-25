@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── Typewriter Effect ──
     const typewriterEl = document.getElementById('typewriter');
     const phrases = [
-        'Frontend Developer',
-        'CS Engineering Student',
-        'AI & ML Enthusiast',
-        'Problem Solver'
+        'Frontend Systems Engineer',
+        'Autonomous Tech & Robotics Enthusiast',
+        'AI & Computer Vision Developer',
+        'Competitive Problem Solver'
     ];
     let phraseIndex = 0;
     let charIndex = 0;
