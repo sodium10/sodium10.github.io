@@ -798,7 +798,7 @@ body.nav-open {
     transform: scale(1.05);
 }
 
-/* 5 Floating Tech Badges (Tuned positions preserved with Cyber Glass styling) */
+/* Hero Floating Cards Base Styles */
 .hero-floating-cards {
     position: absolute;
     inset: 0;
@@ -806,24 +806,24 @@ body.nav-open {
 }
 
 .floating-card {
-    position: absolute;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: clamp(6px, 1.2vw, 10px) clamp(10px, 1.8vw, 18px);
+    gap: 6px;
+    padding: 6px 14px;
     background: rgba(13, 19, 34, 0.88);
     border: 1px solid var(--border-cyan);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-full);
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 242, 254, 0.15);
     backdrop-filter: blur(14px);
     font-family: var(--font-mono);
-    font-size: clamp(0.72rem, 0.7rem + 0.2vw, 0.82rem);
+    font-size: clamp(0.78rem, 0.75rem + 0.15vw, 0.84rem);
     font-weight: 600;
     color: var(--text-primary);
     pointer-events: auto;
     z-index: 5;
     transition: var(--transition);
     white-space: nowrap;
+    letter-spacing: 0.2px;
 }
 
 .floating-card:hover {
@@ -833,63 +833,71 @@ body.nav-open {
 }
 
 .floating-card i {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
 }
 
-.card-1 {
-    top: 4%;
-    left: 2%;
-    animation: float1 4s ease-in-out infinite;
-}
 .card-1 i { color: #00f2fe; }
-
-.card-2 {
-    top: 10%;
-    right: -2%;
-    animation: float2 4.5s ease-in-out infinite;
-}
 .card-2 i { color: #f7df1e; }
-
-.card-3 {
-    bottom: 24%;
-    left: -8%;
-    animation: float3 5s ease-in-out infinite;
-}
 .card-3 i { color: #a78bfa; }
-
-.card-4 {
-    bottom: -4%;
-    left: 14%;
-    animation: float4 4.2s ease-in-out infinite;
-}
 .card-4 i { color: #38bdf8; }
-
-.card-5 {
-    bottom: 2%;
-    right: -10%;
-    animation: float5 4.8s ease-in-out infinite;
-}
 .card-5 i { color: #34d399; }
 
-@keyframes float1 {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-@keyframes float2 {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-@keyframes float3 {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-7px); }
-}
-@keyframes float4 {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-9px); }
-}
-@keyframes float5 {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+/* Desktop-only orbiting layout and floating keyframes */
+@media (min-width: 769px) {
+    .floating-card {
+        position: absolute;
+    }
+
+    .card-1 {
+        top: 4%;
+        left: 2%;
+        animation: float1 4s ease-in-out infinite;
+    }
+
+    .card-2 {
+        top: 10%;
+        right: -2%;
+        animation: float2 4.5s ease-in-out infinite;
+    }
+
+    .card-3 {
+        bottom: 24%;
+        left: -8%;
+        animation: float3 5s ease-in-out infinite;
+    }
+
+    .card-4 {
+        bottom: -4%;
+        left: 14%;
+        animation: float4 4.2s ease-in-out infinite;
+    }
+
+    .card-5 {
+        bottom: 2%;
+        right: -10%;
+        animation: float5 4.8s ease-in-out infinite;
+    }
+
+    @keyframes float1 {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
+    @keyframes float2 {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    @keyframes float3 {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-7px); }
+    }
+    @keyframes float4 {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-9px); }
+    }
+    @keyframes float5 {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+    }
 }
 
 .scroll-indicator {
@@ -2481,22 +2489,120 @@ body.nav-open {
         margin-top: 8px;
     }
 
-    /* Floating Orbit Badges on Tablet/Mobile: Keep within viewport */
+    /* ── Mobile Hero Identity & Badge System (Stacked Executive HUD) ── */
+    .hero-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 32px;
+        padding-top: 24px;
+        width: 100%;
+    }
+
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .hero-visual {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: auto;
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .hero-avatar-wrapper {
+        width: 150px;
+        height: 150px;
+        max-width: 150px;
+        max-height: 150px;
+        aspect-ratio: 1 / 1;
+        position: relative;
+        margin: 0 auto;
+        flex-shrink: 0;
+    }
+
+    .hero-avatar {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2.5px solid var(--cyan);
+        box-shadow: 0 0 24px var(--cyan-glow), inset 0 0 16px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-avatar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .avatar-ring-outer {
+        inset: -14px;
+        border: 1px dashed rgba(0, 242, 254, 0.35);
+    }
+
+    .avatar-ring {
+        inset: -6px;
+        border: 1.5px solid rgba(129, 140, 248, 0.45);
+    }
+
+    /* Fluid Pill Badge System Directly Beneath Avatar */
     .hero-floating-cards {
         position: relative;
         inset: auto;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 10px;
-        margin-top: 24px;
+        gap: 8px 12px;
         width: 100%;
+        max-width: 360px;
+        margin: 1.25rem auto 0;
+        pointer-events: auto;
     }
 
     .floating-card {
-        position: static;
+        position: static !important;
         animation: none !important;
         transform: none !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(0, 242, 254, 0.2);
+        border-radius: 999px;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        font-family: var(--font-mono);
+        font-size: clamp(0.78rem, 0.76rem + 0.1vw, 0.85rem);
+        font-weight: 500;
+        letter-spacing: 0.3px;
+        color: var(--text-primary);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        transition: var(--transition);
+        white-space: nowrap;
+    }
+
+    .floating-card:hover {
+        background: rgba(0, 242, 254, 0.1);
+        border-color: var(--cyan);
+        box-shadow: 0 0 16px var(--cyan-glow);
+    }
+
+    .floating-card i {
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
     }
 
     .research-card {
@@ -2584,8 +2690,10 @@ body.nav-open {
     }
 
     .hero-avatar-wrapper {
-        width: 180px;
-        height: 180px;
+        width: 136px;
+        height: 136px;
+        max-width: 136px;
+        max-height: 136px;
     }
 
     .project-tech span, .skill-tag, .ps-badge {
