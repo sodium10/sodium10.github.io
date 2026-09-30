@@ -88,22 +88,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('scroll', updateActiveNav, { passive: true });
 
-    // ── Mobile Nav Toggle ──
+    // ── Mobile Nav Toggle & Accessible Overlay ──
     const navToggle = document.getElementById('navToggle');
     const navLinksContainer = document.getElementById('navLinks');
+    const navBackdrop = document.getElementById('navBackdrop');
 
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navLinksContainer.classList.toggle('active');
-    });
+    function toggleMobileNav(forceClose = false) {
+        const isOpening = forceClose ? false : !navLinksContainer.classList.contains('active');
+        
+        navToggle.classList.toggle('active', isOpening);
+        navLinksContainer.classList.toggle('active', isOpening);
+        if (navBackdrop) {
+            navBackdrop.classList.toggle('active', isOpening);
+        }
+        navToggle.setAttribute('aria-expanded', isOpening ? 'true' : 'false');
+        document.body.classList.toggle('nav-open', isOpening);
+    }
 
-    // Close mobile nav on link click
-    navLinksContainer.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', () => {
-            navToggle.classList.remove('active');
-            navLinksContainer.classList.remove('active');
+    if (navToggle && navLinksContainer) {
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMobileNav();
         });
-    });
+
+        // Close on backdrop click
+        if (navBackdrop) {
+            navBackdrop.addEventListener('click', () => {
+                toggleMobileNav(true);
+            });
+        }
+
+        // Close mobile nav on link click
+        navLinksContainer.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                toggleMobileNav(true);
+            });
+        });
+
+        // Close mobile nav on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinksContainer.classList.contains('active')) {
+                toggleMobileNav(true);
+            }
+        });
+    }
 
     // ── Scroll Animations (Intersection Observer) ──
     const animatedElements = document.querySelectorAll('[data-animate]');
