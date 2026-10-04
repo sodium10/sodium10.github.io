@@ -211,6 +211,91 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ── Research PDF Modal Viewer ──
+    const pdfModal = document.getElementById('pdfModal');
+    const pdfModalFrame = document.getElementById('pdfModalFrame');
+    const pdfModalTitle = document.getElementById('pdfModalTitle');
+    const pdfExternalBtn = document.getElementById('pdfExternalBtn');
+    const pdfDownloadBtn = document.getElementById('pdfDownloadBtn');
+    const pdfModalClose = document.getElementById('pdfModalClose');
+    const pdfModalLoading = document.getElementById('pdfModalLoading');
+    const openPdfButtons = document.querySelectorAll('.open-pdf-modal-btn');
+
+    function openPdfReader(pdfUrl, title) {
+        if (!pdfModal || !pdfModalFrame) return;
+
+        pdfModalTitle.textContent = title || 'Research Paper';
+        pdfExternalBtn.setAttribute('href', pdfUrl);
+        pdfDownloadBtn.setAttribute('href', pdfUrl);
+        pdfDownloadBtn.setAttribute('download', pdfUrl.split('/').pop());
+
+        // Show loading state
+        if (pdfModalLoading) {
+            pdfModalLoading.classList.remove('hidden');
+        }
+
+        // Set iframe source with zoom and toolbar parameters
+        pdfModalFrame.src = `${pdfUrl}#toolbar=1&view=FitH`;
+        
+        pdfModalFrame.onload = () => {
+            if (pdfModalLoading) {
+                pdfModalLoading.classList.add('hidden');
+            }
+        };
+
+        // Fallback loading hide after 1.5s
+        setTimeout(() => {
+            if (pdfModalLoading) {
+                pdfModalLoading.classList.add('hidden');
+            }
+        }, 1500);
+
+        pdfModal.classList.add('active');
+        pdfModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closePdfReader() {
+        if (!pdfModal) return;
+        pdfModal.classList.remove('active');
+        pdfModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (pdfModalFrame) {
+            pdfModalFrame.src = '';
+        }
+    }
+
+    if (openPdfButtons.length > 0) {
+        openPdfButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pdfUrl = btn.getAttribute('data-pdf');
+                const title = btn.getAttribute('data-title');
+                if (pdfUrl) {
+                    openPdfReader(pdfUrl, title);
+                }
+            });
+        });
+    }
+
+    if (pdfModalClose) {
+        pdfModalClose.addEventListener('click', closePdfReader);
+    }
+
+    if (pdfModal) {
+        pdfModal.addEventListener('click', (e) => {
+            if (e.target === pdfModal) {
+                closePdfReader();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && pdfModal && pdfModal.classList.contains('active')) {
+            closePdfReader();
+        }
+    });
+
     // ── Initial check for elements already in view ──
     handleNavScroll();
     updateActiveNav();
