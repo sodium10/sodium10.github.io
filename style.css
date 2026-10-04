@@ -2147,6 +2147,34 @@ body.nav-open {
     border: 1px solid var(--border);
 }
 
+.research-authors {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: clamp(0.85rem, 0.82rem + 0.15vw, 0.92rem);
+    color: var(--text-highlight);
+    margin-bottom: 8px;
+}
+
+.research-authors strong {
+    color: var(--cyan);
+}
+
+.research-institution {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.research-institution i,
+.research-authors i {
+    color: var(--cyan);
+}
+
 .research-doi {
     font-family: var(--font-mono);
     font-size: 0.85rem;
