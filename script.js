@@ -454,7 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let animFrameId = null;
 
         function getParticleCount() {
-            return window.innerWidth < 768 ? 35 : 90;
+            return window.innerWidth < 768 ? 30 : 80;
         }
 
         function resizeCanvas() {

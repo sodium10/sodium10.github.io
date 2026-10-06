@@ -99,6 +99,13 @@
     box-sizing: border-box;
 }
 
+html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+}
+
 html {
     scroll-behavior: smooth;
     scroll-padding-top: var(--nav-height);
@@ -106,8 +113,6 @@ html {
     color-scheme: dark;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    width: 100%;
 }
 
 body {
@@ -121,9 +126,6 @@ body {
         radial-gradient(rgba(129, 140, 248, 0.05) 1px, transparent 1px);
     background-size: 32px 32px, 96px 96px;
     background-position: 0 0, 16px 16px;
-    overflow-x: hidden;
-    position: relative;
-    width: 100%;
     min-height: 100vh;
 }
 
@@ -2502,9 +2504,11 @@ body.nav-open {
 }
 
 /* ── Project Card 3D Perspective Tilt (Desktop Only) ── */
-.project-card.tilt-active {
-    transform-style: preserve-3d;
-    perspective: 1000px;
+@media (hover: hover) and (pointer: fine) {
+    .project-card.tilt-active {
+        transform-style: preserve-3d;
+        perspective: 1000px;
+    }
 }
 
 /* Mobile touch feedback — subtle scale tap */
@@ -2742,10 +2746,10 @@ body.nav-open {
     }
 
     .hero-avatar-wrapper {
-        width: 150px;
-        height: 150px;
-        max-width: 150px;
-        max-height: 150px;
+        width: 140px;
+        height: 140px;
+        max-width: 140px;
+        max-height: 140px;
         aspect-ratio: 1 / 1;
         position: relative;
         margin: 0 auto;
@@ -2828,12 +2832,13 @@ body.nav-open {
     }
 
     /* Mobile Scroll Indicator: Positioned statically below badges with safe margin & continuous animation */
-    .scroll-indicator {
+    .scroll-indicator,
+    .scroll-down {
         position: relative !important;
         bottom: auto !important;
         left: auto !important;
         transform: none !important;
-        margin-top: clamp(2rem, 5vh, 3.5rem);
+        margin-top: clamp(2rem, 5vh, 4rem);
         margin-bottom: clamp(0.5rem, 2vh, 1.25rem);
         align-self: center;
         z-index: 10;
