@@ -1,23 +1,22 @@
 /* ==========================================================================
    FOWAD ABRAR — AUTONOMOUS SYSTEMS & MACHINE LEARNING CONSOLE
-   High-Performance Animation, Telemetry & Interaction Engine
+   High-Performance 3D Drone Telemetry, Micro-Animations & Interaction Engine
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ── 1. HERO ROLE CYCLER (Typewriter) ──
+    // ── 1. DYNAMIC ENGINEERING ROLE CYCLER ──
     const typewriterEl = document.getElementById('typewriter');
     const rolePhrases = [
-        'Frontend Systems // Vision & Autonomous Robotics',
-        'Machine Learning // YOLOv12 Research',
-        'Cyber-Physical Systems & Embedded Telemetry',
-        'Competitive Algorithmic Solves (100+)',
-        'React 19, TypeScript & High-Performance UI'
+        'Autonomous Systems & Drone Telemetry',
+        'Frontend Software Engineer @ Fazesoft',
+        'Computer Vision & Deep Learning (YOLO/PyTorch)',
+        '3D CAD & Hardware Prototyping (Fusion 360)'
     ];
     let phraseIdx = 0;
     let charIdx = 0;
     let isDeleting = false;
-    let typeSpeed = 70;
+    let typeSpeed = 65;
 
     function typeRole() {
         if (!typewriterEl) return;
@@ -26,20 +25,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isDeleting) {
             typewriterEl.textContent = current.substring(0, charIdx - 1);
             charIdx--;
-            typeSpeed = 35;
+            typeSpeed = 30;
         } else {
             typewriterEl.textContent = current.substring(0, charIdx + 1);
             charIdx++;
-            typeSpeed = 70;
+            typeSpeed = 65;
         }
 
         if (!isDeleting && charIdx === current.length) {
             isDeleting = true;
-            typeSpeed = 2200; // Pause at completion
+            typeSpeed = 2200; // Pause at phrase completion
         } else if (isDeleting && charIdx === 0) {
             isDeleting = false;
             phraseIdx = (phraseIdx + 1) % rolePhrases.length;
-            typeSpeed = 350; // Pause before next
+            typeSpeed = 350; // Pause before starting next
         }
 
         setTimeout(typeRole, typeSpeed);
@@ -64,7 +63,348 @@ document.addEventListener('DOMContentLoaded', () => {
 
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // ── 3. CARD SPOTLIGHT & 3D PERSPECTIVE TILT (Desktop Only) ──
+    // ── 3. INTERACTIVE 3D AUTONOMOUS DRONE & TELEMETRY CANVAS ──
+    const droneCanvas = document.getElementById('droneTelemetryCanvas');
+    const droneViewport = document.getElementById('droneHudViewport');
+    const dronePitchEl = document.getElementById('dronePitch');
+    const droneRollEl = document.getElementById('droneRoll');
+    const droneAltEl = document.getElementById('droneAlt');
+
+    if (droneCanvas && droneViewport) {
+        const ctx = droneCanvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        let width = droneViewport.clientWidth;
+        let height = droneViewport.clientHeight;
+        let animId = null;
+
+        function resizeDroneCanvas() {
+            width = droneViewport.clientWidth;
+            height = droneViewport.clientHeight;
+            droneCanvas.width = width * dpr;
+            droneCanvas.height = height * dpr;
+            droneCanvas.style.width = `${width}px`;
+            droneCanvas.style.height = `${height}px`;
+            ctx.scale(dpr, dpr);
+        }
+
+        resizeDroneCanvas();
+
+        // 3D Matrix & Math Variables
+        let rotX = 0.25; // Pitch
+        let rotY = 0.6;  // Yaw
+        let rotZ = 0.0;  // Roll
+        let targetRotX = 0.25;
+        let targetRotY = 0.6;
+        let targetRotZ = 0.0;
+        let autoYawSpeed = 0.008;
+        let rotorAngle = 0;
+        let lidarScanAngle = 0;
+        let time = 0;
+
+        // Desktop Mouse Tracking
+        const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+        if (isDesktop) {
+            droneViewport.addEventListener('mousemove', (e) => {
+                const rect = droneViewport.getBoundingClientRect();
+                const mouseX = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to +0.5
+                const mouseY = (e.clientY - rect.top) / rect.height - 0.5;
+
+                targetRotX = mouseY * 0.8 + 0.2;
+                targetRotZ = -mouseX * 0.6;
+                targetRotY += mouseX * 0.02;
+            });
+
+            droneViewport.addEventListener('mouseleave', () => {
+                targetRotX = 0.25;
+                targetRotZ = 0.0;
+            });
+        }
+
+        // 3D Projection Math
+        function project3D(x, y, z, originX, originY, focal) {
+            // Apply Rotations: Yaw (Y), Pitch (X), Roll (Z)
+            // 1. Yaw around Y
+            const cosY = Math.cos(rotY);
+            const sinY = Math.sin(rotY);
+            const x1 = x * cosY + z * sinY;
+            const y1 = y;
+            const z1 = -x * sinY + z * cosY;
+
+            // 2. Pitch around X
+            const cosX = Math.cos(rotX);
+            const sinX = Math.sin(rotX);
+            const x2 = x1;
+            const y2 = y1 * cosX - z1 * sinX;
+            const z2 = y1 * sinX + z1 * cosX;
+
+            // 3. Roll around Z
+            const cosZ = Math.cos(rotZ);
+            const sinZ = Math.sin(rotZ);
+            const x3 = x2 * cosZ - y2 * sinZ;
+            const y3 = x2 * sinZ + y2 * cosZ;
+            const z3 = z2;
+
+            // Perspective divide
+            const f = focal / (focal + z3 + 300);
+            return {
+                x: originX + x3 * f,
+                y: originY + y3 * f,
+                z: z3,
+                scale: f
+            };
+        }
+
+        // Simulated LiDAR Point Cloud (Ground obstacles & target range echoes)
+        const lidarPoints = [];
+        for (let i = 0; i < 40; i++) {
+            const angle = (i / 40) * Math.PI * 2;
+            const dist = 70 + (i % 5) * 18;
+            lidarPoints.push({
+                x: Math.cos(angle) * dist,
+                y: 55 + Math.sin(i * 3) * 6,
+                z: Math.sin(angle) * dist
+            });
+        }
+
+        function renderDroneHUD() {
+            time += 0.03;
+            rotorAngle += 0.45;
+            lidarScanAngle += 0.05;
+
+            // Autonomous Yaw Rotation
+            targetRotY += autoYawSpeed;
+
+            // Smooth Lerp Towards Target Angles
+            rotX += (targetRotX - rotX) * 0.08;
+            rotY += (targetRotY - rotY) * 0.08;
+            rotZ += (targetRotZ - rotZ) * 0.08;
+
+            // Update Telemetry Readouts
+            const pitchDeg = (rotX * 180 / Math.PI) - 14.3;
+            const rollDeg = (rotZ * 180 / Math.PI);
+            const altitudeM = (12.4 + Math.sin(time * 1.5) * 0.35).toFixed(1);
+
+            if (dronePitchEl) dronePitchEl.textContent = (pitchDeg >= 0 ? '+' : '') + pitchDeg.toFixed(1) + '°';
+            if (droneRollEl) droneRollEl.textContent = (rollDeg >= 0 ? '+' : '') + rollDeg.toFixed(1) + '°';
+            if (droneAltEl) droneAltEl.textContent = altitudeM + 'm';
+
+            ctx.clearRect(0, 0, width, height);
+
+            const originX = width / 2;
+            // Bobbing hover vibration
+            const originY = height / 2 + Math.sin(time * 2) * 5;
+            const focal = Math.min(width, height) * 1.4;
+
+            // ── 1. DRAW RADAR GROUND GRID & LIDAR SCAN ──
+            ctx.lineWidth = 0.5;
+            for (let r = 40; r <= 130; r += 30) {
+                ctx.beginPath();
+                for (let a = 0; a <= Math.PI * 2; a += 0.25) {
+                    const gx = Math.cos(a) * r;
+                    const gy = 55;
+                    const gz = Math.sin(a) * r;
+                    const p = project3D(gx, gy, gz, originX, originY, focal);
+                    if (a === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = 'rgba(0, 242, 254, 0.12)';
+                ctx.stroke();
+            }
+
+            // LiDAR Point Cloud
+            for (let i = 0; i < lidarPoints.length; i++) {
+                const lp = lidarPoints[i];
+                const p = project3D(lp.x, lp.y, lp.z, originX, originY, focal);
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, Math.max(1, 2 * p.scale), 0, Math.PI * 2);
+                ctx.fillStyle = (i % 7 === 0) ? 'rgba(99, 102, 241, 0.65)' : 'rgba(0, 242, 254, 0.35)';
+                ctx.fill();
+            }
+
+            // LiDAR Rotating Sweep Cone
+            const scanDist = 120;
+            const scanX = Math.cos(lidarScanAngle) * scanDist;
+            const scanZ = Math.sin(lidarScanAngle) * scanDist;
+            const centerBase = project3D(0, 15, 0, originX, originY, focal);
+            const scanTarget = project3D(scanX, 55, scanZ, originX, originY, focal);
+
+            ctx.beginPath();
+            ctx.moveTo(centerBase.x, centerBase.y);
+            ctx.lineTo(scanTarget.x, scanTarget.y);
+            ctx.strokeStyle = 'rgba(0, 242, 254, 0.4)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            // ── 2. DRONE CENTRAL FUSELAGE (3D Wireframe Hub) ──
+            const bodySize = 22;
+            const bodyH = 9;
+            const bodyVerts = [
+                { x: -bodySize, y: -bodyH, z: -bodySize },
+                { x: bodySize, y: -bodyH, z: -bodySize },
+                { x: bodySize, y: -bodyH, z: bodySize },
+                { x: -bodySize, y: -bodyH, z: bodySize },
+                { x: -bodySize, y: bodyH, z: -bodySize },
+                { x: bodySize, y: bodyH, z: -bodySize },
+                { x: bodySize, y: bodyH, z: bodySize },
+                { x: -bodySize, y: bodyH, z: bodySize }
+            ].map(v => project3D(v.x, v.y, v.z, originX, originY, focal));
+
+            const bodyEdges = [
+                [0,1], [1,2], [2,3], [3,0], // Top
+                [4,5], [5,6], [6,7], [7,4], // Bottom
+                [0,4], [1,5], [2,6], [3,7]  // Vertical Struts
+            ];
+
+            ctx.lineWidth = 1.2;
+            ctx.strokeStyle = '#00f2fe';
+            bodyEdges.forEach(([i, j]) => {
+                ctx.beginPath();
+                ctx.moveTo(bodyVerts[i].x, bodyVerts[i].y);
+                ctx.lineTo(bodyVerts[j].x, bodyVerts[j].y);
+                ctx.stroke();
+            });
+
+            // Avionics Core Glow
+            const coreCenter = project3D(0, 0, 0, originX, originY, focal);
+            ctx.beginPath();
+            ctx.arc(coreCenter.x, coreCenter.y, 4 * coreCenter.scale, 0, Math.PI * 2);
+            ctx.fillStyle = '#00f2fe';
+            ctx.shadowColor = '#00f2fe';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.shadowBlur = 0; // Reset
+
+            // ── 3. 4 MOTOR ARMS & PROPELLERS (X-Configuration) ──
+            const armSpan = 56;
+            const motors = [
+                { x: -armSpan, y: -2, z: -armSpan, name: 'FL' },
+                { x: armSpan, y: -2, z: -armSpan, name: 'FR' },
+                { x: armSpan, y: -2, z: armSpan, name: 'RR' },
+                { x: -armSpan, y: -2, z: armSpan, name: 'RL' }
+            ];
+
+            motors.forEach((m, idx) => {
+                const armStart = project3D(m.x * 0.3, 0, m.z * 0.3, originX, originY, focal);
+                const armEnd = project3D(m.x, m.y, m.z, originX, originY, focal);
+
+                // Arm Tube
+                ctx.beginPath();
+                ctx.moveTo(armStart.x, armStart.y);
+                ctx.lineTo(armEnd.x, armEnd.y);
+                ctx.strokeStyle = 'rgba(99, 102, 241, 0.85)';
+                ctx.lineWidth = 1.6;
+                ctx.stroke();
+
+                // Motor Pod Cylinder
+                const podTop = project3D(m.x, m.y - 7, m.z, originX, originY, focal);
+                const podBottom = project3D(m.x, m.y + 4, m.z, originX, originY, focal);
+                ctx.beginPath();
+                ctx.moveTo(podTop.x, podTop.y);
+                ctx.lineTo(podBottom.x, podBottom.y);
+                ctx.strokeStyle = '#00f2fe';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                // Spinning Propeller Disc / Rotor
+                const propR = 26;
+                const dir = (idx % 2 === 0) ? 1 : -1;
+                const curPropA = (rotorAngle * dir) + (idx * Math.PI / 2);
+
+                const blade1 = project3D(m.x + Math.cos(curPropA) * propR, m.y - 8, m.z + Math.sin(curPropA) * propR, originX, originY, focal);
+                const blade2 = project3D(m.x - Math.cos(curPropA) * propR, m.y - 8, m.z - Math.sin(curPropA) * propR, originX, originY, focal);
+
+                // Propeller Blade
+                ctx.beginPath();
+                ctx.moveTo(blade1.x, blade1.y);
+                ctx.lineTo(blade2.x, blade2.y);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.8;
+                ctx.stroke();
+
+                // Rotor Guard Sweep Disc
+                ctx.beginPath();
+                for (let a = 0; a <= Math.PI * 2; a += 0.4) {
+                    const gx = m.x + Math.cos(a) * propR;
+                    const gy = m.y - 8;
+                    const gz = m.z + Math.sin(a) * propR;
+                    const p = project3D(gx, gy, gz, originX, originY, focal);
+                    if (a === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = 'rgba(0, 242, 254, 0.2)';
+                ctx.lineWidth = 0.6;
+                ctx.stroke();
+            });
+
+            // ── 4. FORWARD ORIENTATION ARROW (Heading Vector) ──
+            const noseBase = project3D(0, -bodyH, -bodySize, originX, originY, focal);
+            const noseTip = project3D(0, -bodyH, -bodySize - 22, originX, originY, focal);
+            ctx.beginPath();
+            ctx.moveTo(noseBase.x, noseBase.y);
+            ctx.lineTo(noseTip.x, noseTip.y);
+            ctx.strokeStyle = '#00f2fe';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Arrowhead
+            const arrowL = project3D(-6, -bodyH, -bodySize - 14, originX, originY, focal);
+            const arrowR = project3D(6, -bodyH, -bodySize - 14, originX, originY, focal);
+            ctx.beginPath();
+            ctx.moveTo(arrowL.x, arrowL.y);
+            ctx.lineTo(noseTip.x, noseTip.y);
+            ctx.lineTo(arrowR.x, arrowR.y);
+            ctx.strokeStyle = '#00f2fe';
+            ctx.lineWidth = 1.4;
+            ctx.stroke();
+
+            // ── 5. OPTICAL GIMBAL / LIDAR SENSOR TURRET ──
+            const gimbalMount = project3D(0, bodyH, 0, originX, originY, focal);
+            const gimbalTurret = project3D(0, bodyH + 10, 0, originX, originY, focal);
+            ctx.beginPath();
+            ctx.moveTo(gimbalMount.x, gimbalMount.y);
+            ctx.lineTo(gimbalTurret.x, gimbalTurret.y);
+            ctx.strokeStyle = '#818cf8';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(gimbalTurret.x, gimbalTurret.y, 3 * gimbalTurret.scale, 0, Math.PI * 2);
+            ctx.fillStyle = '#6366f1';
+            ctx.fill();
+
+            animId = requestAnimationFrame(renderDroneHUD);
+        }
+
+        // Debounced Resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                resizeDroneCanvas();
+            }, 150);
+        }, { passive: true });
+
+        // Reduced Motion Check
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (!reduceMotion.matches) {
+            renderDroneHUD();
+        }
+
+        reduceMotion.addEventListener('change', (e) => {
+            if (e.matches) {
+                if (animId) cancelAnimationFrame(animId);
+                ctx.clearRect(0, 0, width, height);
+            } else {
+                resizeDroneCanvas();
+                renderDroneHUD();
+            }
+        });
+    }
+
+    // ── 4. CARD SPOTLIGHT & 3D PERSPECTIVE TILT (Desktop Only) ──
     const isDesktopPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
     if (isDesktopPointer) {
@@ -108,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── 4. NUMERICAL TELEMETRY COUNTER INTERPOLATION ──
+    // ── 5. NUMERICAL TELEMETRY COUNTER INTERPOLATION ──
     const counterElements = document.querySelectorAll('[data-count]');
 
     function runCounter(el) {
@@ -147,7 +487,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     counterElements.forEach(el => counterObserver.observe(el));
 
-    // ── 5. TERMINAL HUD TYPEWRITER (manifest.sh) ──
+    // ── 6. TERMINAL HUD TYPEWRITER (manifest.sh) ──
     const terminalTyped = document.getElementById('terminalTyped');
     const terminalBody = document.getElementById('terminalBody');
     let terminalStarted = false;
@@ -191,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
         termObserver.observe(terminalBody);
     }
 
-    // ── 6. COPY DOSSIER & KEYBOARD SHORTCUTS ([C] key) ──
+    // ── 7. COPY DOSSIER & KEYBOARD SHORTCUTS ([C] key) ──
     const copyDossierBtn = document.getElementById('copyDossierBtn');
     const toastEl = document.getElementById('systemToast');
     const toastMsg = document.getElementById('toastMessage');
@@ -209,16 +549,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function executeCopyDossier() {
         const dossierPayload = `=== FOWAD ABRAR — ENGINEERING DOSSIER ===
-Role: Frontend Systems & Autonomous Tech Engineer
+Role: Autonomous Systems & Robotics Engineer | Frontend Systems Developer
 Education: B.Sc. in CSE, United International University (Final Year)
 Experience: Frontend Developer Intern at Fazesoft
-Research: 6 Publications (YOLOv12 UAV Flood Rescue, Assistive Vision ML, IoT Smart Systems)
+Research: 6 Publications (YOLOv12 UAV Flood Rescue, Assistive Vision ML, Dual-Microcontroller IoT)
 Production: Shohay (shohay-bd.vercel.app), HomeNet BD (homenetbd.com)
-Core Stack: React 19, TypeScript, Next.js, Python, YOLOv12, PyTorch, C/C++, ESP32/Arduino
+Core Stack: ROS2, PX4, Python, YOLOv12, PyTorch, React 19, TypeScript, C/C++, ESP32/Arduino, Fusion 360
 GitHub: https://github.com/sodium10
 LinkedIn: https://www.linkedin.com/in/fowad-morshed-10112oo2/
 Email: fowadabrar@gmail.com
-Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
+Status: Open for Autonomous Systems, Robotics & Software Engineering Roles`;
 
         navigator.clipboard.writeText(dossierPayload).then(() => {
             showToast('✓ Engineering Dossier Copied to Clipboard');
@@ -239,7 +579,7 @@ Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
         }
     });
 
-    // ── 7. NAVBAR SCROLL EFFECT & ACTIVE LINK HIGHLIGHT ──
+    // ── 8. NAVBAR SCROLL EFFECT & ACTIVE LINK HIGHLIGHT ──
     const navbar = document.getElementById('navbar');
     const sections = document.querySelectorAll('.section, .hero');
     const navLinks = document.querySelectorAll('.nav-link:not(.nav-link-cta)');
@@ -275,7 +615,7 @@ Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
 
-    // ── 8. MOBILE NAV TOGGLE & ACCESSIBILITY ──
+    // ── 9. MOBILE NAV TOGGLE & ACCESSIBILITY ──
     const navToggle = document.getElementById('navToggle');
     const navLinksContainer = document.getElementById('navLinks');
     const navBackdrop = document.getElementById('navBackdrop');
@@ -307,7 +647,7 @@ Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
         });
     });
 
-    // ── 9. WORKSPACE PROJECT FILTER BAR ──
+    // ── 10. WORKSPACE PROJECT FILTER BAR ──
     const filterBtns = document.querySelectorAll('.filter-btn');
     const projectCards = document.querySelectorAll('.projects-grid .project-card');
 
@@ -338,7 +678,7 @@ Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
         });
     }
 
-    // ── 10. PDF RESEARCH VIEWER MODAL ──
+    // ── 11. PDF RESEARCH VIEWER MODAL ──
     const pdfModal = document.getElementById('pdfModal');
     const pdfModalFrame = document.getElementById('pdfModalFrame');
     const pdfModalTitle = document.getElementById('pdfModalTitle');
@@ -401,7 +741,7 @@ Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
         }
     });
 
-    // ── 11. AMBIENT CURSOR GLOW ──
+    // ── 12. AMBIENT CURSOR GLOW ──
     const cursorGlow = document.getElementById('cursorGlow');
     if (cursorGlow && isDesktopPointer) {
         document.addEventListener('mousemove', (e) => {
@@ -412,7 +752,7 @@ Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
         });
     }
 
-    // ── 12. SMOOTH ANCHOR LINK SCROLLING ──
+    // ── 13. SMOOTH ANCHOR LINK SCROLLING ──
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const targetId = this.getAttribute('href');
@@ -428,7 +768,7 @@ Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
         });
     });
 
-    // ── 13. LIDAR & NEURAL MESH CANVAS ENGINE ──
+    // ── 14. LIDAR & NEURAL MESH CANVAS BACKGROUND ──
     const canvas = document.getElementById('neuralCanvas');
     const diagFpsEl = document.getElementById('diagFps');
 
@@ -437,7 +777,6 @@ Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
         const dpr = window.devicePixelRatio || 1;
         let particles = [];
         let animId = null;
-        let lastFrameTime = performance.now();
         let frameCount = 0;
         let fpsTimer = performance.now();
 

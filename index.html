@@ -23,7 +23,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <link rel="stylesheet" href="style.css?v=13.0">
+    <link rel="stylesheet" href="style.css?v=14.0">
 </head>
 
 <body>
@@ -123,11 +123,11 @@
 
                     <div class="hero-telemetry-tile" data-reveal style="--delay: 200ms">
                         <div class="telemetry-tile-header">
-                            <span class="telemetry-metric" data-count="93" data-suffix=".4% mAP">0</span>
-                            <i class="fas fa-bolt telemetry-icon"></i>
+                            <span class="telemetry-metric" data-count="4" data-suffix="+">0</span>
+                            <i class="fas fa-robot telemetry-icon"></i>
                         </div>
-                        <span class="telemetry-caption">YOLOv12 Benchmark</span>
-                        <div class="tile-bar-gauge"><div class="gauge-fill" style="width: 94%;"></div></div>
+                        <span class="telemetry-caption">Autonomous &amp; ML Systems</span>
+                        <div class="tile-bar-gauge"><div class="gauge-fill" style="width: 92%;"></div></div>
                     </div>
                 </div>
 
@@ -178,29 +178,44 @@
                 </div>
             </div>
 
-            <!-- Right Engineering HUD Card -->
+            <!-- Right Engineering HUD Card: 3D Autonomous Drone Flight Deck -->
             <div class="hero-hud-card" data-reveal style="--delay: 150ms">
                 <!-- Top Diagnostic Header -->
                 <div class="hud-diagnostics-bar">
                     <div class="diag-node"><span class="diag-bullet"></span>FPS: <span class="diag-val" id="diagFps">60</span></div>
                     <div class="diag-node"><span class="diag-bullet"></span>LATENCY: <span class="diag-val">4.2ms</span></div>
-                    <div class="diag-node"><span class="diag-bullet"></span>INFERENCE: <span class="diag-val">PyTorch / C++</span></div>
+                    <div class="diag-node"><span class="diag-bullet"></span>AUTOPILOT: <span class="diag-val">PX4 / ROS2</span></div>
                 </div>
 
-                <!-- High-Tech Framed Studio Portrait -->
-                <div class="hud-portrait-container">
+                <!-- 3D Drone Telemetry Canvas Viewport -->
+                <div class="drone-hud-viewport" id="droneHudViewport">
                     <div class="hud-corner top-left"></div>
                     <div class="hud-corner top-right"></div>
                     <div class="hud-corner bottom-left"></div>
                     <div class="hud-corner bottom-right"></div>
                     <div class="hud-scanline"></div>
 
-                    <div class="hud-portrait-frame">
-                        <img src="pi.jpeg" alt="Fowad Abrar — Autonomous Systems Engineer" class="hud-portrait-img">
-                        <div class="hud-tag-overlay">
-                            <i class="fas fa-shield-halved"></i>
-                            <span>FAZESOFT FRONTEND INTERN &bull; UIU CSE '26</span>
+                    <!-- 3D Drone & LiDAR Wireframe Canvas -->
+                    <canvas id="droneTelemetryCanvas" aria-label="Interactive 3D Autonomous Drone Telemetry Viewport"></canvas>
+
+                    <!-- Real-Time Flight Telemetry Overlay -->
+                    <div class="drone-telemetry-overlay">
+                        <div class="telemetry-overlay-row top-row">
+                            <div class="overlay-stat"><span class="stat-key">STATUS:</span> <span class="stat-val status-armed">ARMED // OFFBOARD</span></div>
+                            <div class="overlay-stat"><span class="stat-key">GPS:</span> <span class="stat-val">RTK_FIX (18 SAT)</span></div>
                         </div>
+                        <div class="telemetry-overlay-row bottom-row">
+                            <div class="overlay-stat"><span class="stat-key">PITCH:</span> <span class="stat-val" id="dronePitch">+0.4&deg;</span></div>
+                            <div class="overlay-stat"><span class="stat-key">ROLL:</span> <span class="stat-val" id="droneRoll">-0.2&deg;</span></div>
+                            <div class="overlay-stat"><span class="stat-key">ALT:</span> <span class="stat-val" id="droneAlt">12.4m</span></div>
+                        </div>
+                    </div>
+
+                    <!-- HUD Reticle & Crosshair -->
+                    <div class="drone-reticle" aria-hidden="true">
+                        <div class="reticle-circle"></div>
+                        <div class="reticle-crosshair-h"></div>
+                        <div class="reticle-crosshair-v"></div>
                     </div>
                 </div>
 
@@ -208,24 +223,24 @@
                 <div class="hud-matrix-table">
                     <div class="matrix-header">
                         <i class="fas fa-microchip"></i>
-                        <span>CORE TECH &amp; HARDWARE MATRIX</span>
+                        <span>AUTONOMOUS &amp; EMBEDDED MATRIX</span>
                     </div>
                     <div class="matrix-grid">
                         <div class="matrix-cell">
-                            <span class="cell-label">UI / WEB</span>
-                            <span class="cell-tech">React 19, TypeScript, Next.js, HTML5/CSS3</span>
+                            <span class="cell-label">AUTONOMOUS &amp; ROBOTICS</span>
+                            <span class="cell-tech">ROS2, PX4 Autopilot, UAV Telemetry, LiDAR</span>
                         </div>
                         <div class="matrix-cell">
-                            <span class="cell-label">AI / VISION</span>
-                            <span class="cell-tech">YOLOv12, PyTorch, OpenCV, Edge ML</span>
+                            <span class="cell-label">VISION &amp; EDGE AI</span>
+                            <span class="cell-tech">YOLOv12, PyTorch, OpenCV, TensorRT</span>
                         </div>
                         <div class="matrix-cell">
-                            <span class="cell-label">CORE ALGOS</span>
-                            <span class="cell-tech">C / C++ (100+ Solves), Data Structures</span>
+                            <span class="cell-label">SYSTEMS &amp; ALGOS</span>
+                            <span class="cell-tech">C / C++ (100+ Solves), Real-Time Firmware</span>
                         </div>
                         <div class="matrix-cell">
-                            <span class="cell-label">CYBER-PHYSICAL</span>
-                            <span class="cell-tech">ESP32, Arduino, Autodesk Fusion (3D CAD)</span>
+                            <span class="cell-label">WEB &amp; CAD PROTOTYPING</span>
+                            <span class="cell-tech">React 19 / TS, Autodesk Fusion (3D CAD)</span>
                         </div>
                     </div>
                 </div>
@@ -1270,7 +1285,7 @@
     <!-- Interactive Lidar & Neural Mesh Canvas -->
     <canvas id="neuralCanvas" aria-hidden="true"></canvas>
 
-    <script defer src="script.js?v=13.0"></script>
+    <script defer src="script.js?v=14.0"></script>
 </body>
 
 </html>

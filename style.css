@@ -739,99 +739,119 @@ body::after {
     font-weight: 600;
 }
 
-.hud-portrait-container {
+.drone-hud-viewport {
     position: relative;
     width: 100%;
     border-radius: var(--radius-sm);
     overflow: hidden;
-    border: 1px solid var(--border);
-    background: #020408;
-    aspect-ratio: 4 / 3.4;
-}
-
-.hud-corner {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    z-index: 5;
-    pointer-events: none;
-}
-
-.hud-corner.top-left {
-    top: 6px;
-    left: 6px;
-    border-top: 2px solid var(--cyan);
-    border-left: 2px solid var(--cyan);
-}
-
-.hud-corner.top-right {
-    top: 6px;
-    right: 6px;
-    border-top: 2px solid var(--cyan);
-    border-right: 2px solid var(--cyan);
-}
-
-.hud-corner.bottom-left {
-    bottom: 6px;
-    left: 6px;
-    border-bottom: 2px solid var(--cyan);
-    border-left: 2px solid var(--cyan);
-}
-
-.hud-corner.bottom-right {
-    bottom: 6px;
-    right: 6px;
-    border-bottom: 2px solid var(--cyan);
-    border-right: 2px solid var(--cyan);
-}
-
-.hud-scanline {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.4) 51%);
-    background-size: 100% 4px;
-    pointer-events: none;
-    z-index: 4;
-    opacity: 0.35;
-}
-
-.hud-portrait-frame {
-    width: 100%;
-    height: 100%;
-    position: relative;
-}
-
-.hud-portrait-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 20%;
-    display: block;
-    filter: brightness(0.95) contrast(1.05);
-    transition: transform 0.5s ease;
-}
-
-.hero-hud-card:hover .hud-portrait-img {
-    transform: scale(1.02);
-}
-
-.hud-tag-overlay {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    background: rgba(4, 6, 10, 0.9);
     border: 1px solid var(--border-cyan);
-    border-radius: 4px;
-    padding: 6px 10px;
+    background: radial-gradient(circle at 50% 50%, #060c18 0%, #020408 100%);
+    aspect-ratio: 16 / 11;
+    min-height: 240px;
+    box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 242, 254, 0.08);
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--cyan);
+    justify-content: center;
+}
+
+#droneTelemetryCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: crosshair;
+}
+
+.drone-telemetry-overlay {
+    position: absolute;
+    inset: 0;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: none;
     z-index: 6;
-    backdrop-filter: blur(10px);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+}
+
+.telemetry-overlay-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.overlay-stat {
+    background: rgba(4, 6, 10, 0.78);
+    border: 1px solid rgba(0, 242, 254, 0.25);
+    border-radius: 4px;
+    padding: 2px 7px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.stat-key {
+    color: var(--text-muted);
+    font-size: 0.62rem;
+}
+
+.stat-val {
+    color: var(--cyan);
+    font-weight: 600;
+}
+
+.stat-val.status-armed {
+    color: #22c55e;
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.5);
+}
+
+.drone-reticle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0.5;
+}
+
+.reticle-circle {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed rgba(0, 242, 254, 0.4);
+    border-radius: 50%;
+    animation: reticleSpin 25s linear infinite;
+}
+
+@keyframes reticleSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.reticle-crosshair-h {
+    position: absolute;
+    top: 50%;
+    left: -12px;
+    right: -12px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 242, 254, 0.5), transparent);
+}
+
+.reticle-crosshair-v {
+    position: absolute;
+    left: 50%;
+    top: -12px;
+    bottom: -12px;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(0, 242, 254, 0.5), transparent);
 }
 
 .hud-matrix-table {
@@ -2458,6 +2478,12 @@ body::after {
 
     .hero {
         padding-top: calc(var(--nav-height) + 20px);
+    }
+
+    .drone-hud-viewport {
+        aspect-ratio: 16 / 10;
+        max-height: 280px;
+        min-height: 200px;
     }
 
     .hero-telemetry-grid {
