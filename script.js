@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── 1. DYNAMIC ENGINEERING ROLE CYCLER ──
     const typewriterEl = document.getElementById('typewriter');
     const rolePhrases = [
+        'Junior Frontend Software Engineer',
         'Autonomous Systems & Drone Telemetry',
-        'Frontend Software Engineer @ Fazesoft',
-        'Computer Vision & Deep Learning (YOLO/PyTorch)',
+        'Computer Vision & Edge ML (YOLO/PyTorch)',
         '3D CAD & Hardware Prototyping (Fusion 360)'
     ];
     let phraseIdx = 0;
@@ -549,16 +549,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function executeCopyDossier() {
         const dossierPayload = `=== FOWAD ABRAR — ENGINEERING DOSSIER ===
-Role: Autonomous Systems & Robotics Engineer | Frontend Systems Developer
+Role: Junior Frontend Software Engineer | Autonomous Systems & ML
 Education: B.Sc. in CSE, United International University (Final Year)
-Experience: Frontend Developer Intern at Fazesoft
+Experience: Junior Frontend Software Engineer at Fazesoft
 Research: 6 Publications (YOLOv12 UAV Flood Rescue, Assistive Vision ML, Dual-Microcontroller IoT)
 Production: Shohay (shohay-bd.vercel.app), HomeNet BD (homenetbd.com)
-Core Stack: ROS2, PX4, Python, YOLOv12, PyTorch, React 19, TypeScript, C/C++, ESP32/Arduino, Fusion 360
+Core Stack: React 19, TypeScript, ROS2, PX4, Python, YOLOv12, PyTorch, C/C++, ESP32/Arduino, Fusion 360
 GitHub: https://github.com/sodium10
 LinkedIn: https://www.linkedin.com/in/fowad-morshed-10112oo2/
 Email: fowadabrar@gmail.com
-Status: Open for Autonomous Systems, Robotics & Software Engineering Roles`;
+Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
 
         navigator.clipboard.writeText(dossierPayload).then(() => {
             showToast('✓ Engineering Dossier Copied to Clipboard');
