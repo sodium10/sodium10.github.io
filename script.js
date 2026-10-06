@@ -1,166 +1,54 @@
-/* ==========================================
-   FOWAD ABRAR — Portfolio JavaScript
-   High-Performance Micro-Animations Engine
-   ========================================== */
+/* ==========================================================================
+   FOWAD ABRAR — AUTONOMOUS SYSTEMS & MACHINE LEARNING CONSOLE
+   High-Performance Animation, Telemetry & Interaction Engine
+   ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ── Hero Typewriter Effect ──
+    // ── 1. HERO ROLE CYCLER (Typewriter) ──
     const typewriterEl = document.getElementById('typewriter');
-    const phrases = [
-        'Frontend Systems Engineer',
-        'Autonomous Tech & Robotics Enthusiast',
-        'AI & Computer Vision Developer',
-        'Competitive Problem Solver'
+    const rolePhrases = [
+        'Frontend Systems // Vision & Autonomous Robotics',
+        'Machine Learning // YOLOv12 Research',
+        'Cyber-Physical Systems & Embedded Telemetry',
+        'Competitive Algorithmic Solves (100+)',
+        'React 19, TypeScript & High-Performance UI'
     ];
-    let phraseIndex = 0;
-    let charIndex = 0;
+    let phraseIdx = 0;
+    let charIdx = 0;
     let isDeleting = false;
-    let typingSpeed = 80;
+    let typeSpeed = 70;
 
-    function type() {
-        const currentPhrase = phrases[phraseIndex];
+    function typeRole() {
+        if (!typewriterEl) return;
+        const current = rolePhrases[phraseIdx];
 
         if (isDeleting) {
-            typewriterEl.textContent = currentPhrase.substring(0, charIndex - 1);
-            charIndex--;
-            typingSpeed = 40;
+            typewriterEl.textContent = current.substring(0, charIdx - 1);
+            charIdx--;
+            typeSpeed = 35;
         } else {
-            typewriterEl.textContent = currentPhrase.substring(0, charIndex + 1);
-            charIndex++;
-            typingSpeed = 80;
+            typewriterEl.textContent = current.substring(0, charIdx + 1);
+            charIdx++;
+            typeSpeed = 70;
         }
 
-        if (!isDeleting && charIndex === currentPhrase.length) {
+        if (!isDeleting && charIdx === current.length) {
             isDeleting = true;
-            typingSpeed = 2000; // Pause at end
-        } else if (isDeleting && charIndex === 0) {
+            typeSpeed = 2200; // Pause at completion
+        } else if (isDeleting && charIdx === 0) {
             isDeleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            typingSpeed = 400; // Pause before next phrase
+            phraseIdx = (phraseIdx + 1) % rolePhrases.length;
+            typeSpeed = 350; // Pause before next
         }
 
-        setTimeout(type, typingSpeed);
+        setTimeout(typeRole, typeSpeed);
     }
 
-    type();
+    typeRole();
 
-    // ── Navbar Scroll Effect ──
-    const navbar = document.getElementById('navbar');
-    let lastScrollY = 0;
-
-    function handleNavScroll() {
-        const scrollY = window.scrollY;
-
-        if (scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-
-        lastScrollY = scrollY;
-    }
-
-    window.addEventListener('scroll', handleNavScroll, { passive: true });
-
-    // ── Active Nav Link Highlight ──
-    const sections = document.querySelectorAll('.section, .hero');
-    const navLinks = document.querySelectorAll('.nav-link:not(.nav-link-cta)');
-
-    function updateActiveNav() {
-        const scrollY = window.scrollY + 120;
-
-        sections.forEach(section => {
-            const top = section.offsetTop;
-            const height = section.offsetHeight;
-            const id = section.getAttribute('id');
-
-            if (scrollY >= top && scrollY < top + height) {
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${id}`) {
-                        link.classList.add('active');
-                    }
-                });
-            }
-        });
-    }
-
-    window.addEventListener('scroll', updateActiveNav, { passive: true });
-
-    // ── Mobile Nav Toggle & Accessible Overlay ──
-    const navToggle = document.getElementById('navToggle');
-    const navLinksContainer = document.getElementById('navLinks');
-    const navBackdrop = document.getElementById('navBackdrop');
-
-    function toggleMobileNav(forceClose = false) {
-        const isOpening = forceClose ? false : !navLinksContainer.classList.contains('active');
-        
-        navToggle.classList.toggle('active', isOpening);
-        navLinksContainer.classList.toggle('active', isOpening);
-        if (navBackdrop) {
-            navBackdrop.classList.toggle('active', isOpening);
-        }
-        navToggle.setAttribute('aria-expanded', isOpening ? 'true' : 'false');
-        document.body.classList.toggle('nav-open', isOpening);
-    }
-
-    if (navToggle && navLinksContainer) {
-        navToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleMobileNav();
-        });
-
-        // Close on backdrop click
-        if (navBackdrop) {
-            navBackdrop.addEventListener('click', () => {
-                toggleMobileNav(true);
-            });
-        }
-
-        // Close mobile nav on link click
-        navLinksContainer.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                toggleMobileNav(true);
-            });
-        });
-
-        // Close mobile nav on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && navLinksContainer.classList.contains('active')) {
-                toggleMobileNav(true);
-            }
-        });
-    }
-
-    // ── Old Scroll Animations (Intersection Observer for hero [data-animate]) ──
-    const animatedElements = document.querySelectorAll('[data-animate]');
-
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -60px 0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const delay = entry.target.getAttribute('data-delay') || 0;
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, parseInt(delay));
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    animatedElements.forEach(el => observer.observe(el));
-
-    // ══════════════════════════════════════════════════════════════════════
-    //  1. SCROLL-TRIGGERED REVEAL ENGINE (data-reveal, zero dependencies)
-    // ══════════════════════════════════════════════════════════════════════
+    // ── 2. SCROLL-TRIGGERED REVEAL ENGINE ([data-reveal]) ──
     const revealElements = document.querySelectorAll('[data-reveal]');
-
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -176,62 +64,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
     revealElements.forEach(el => revealObserver.observe(el));
 
-    // ══════════════════════════════════════════════════════════════════════
-    //  2. DESKTOP-ONLY 3D PERSPECTIVE TILT ON PROJECT CARDS
-    // ══════════════════════════════════════════════════════════════════════
-    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-        const projectCards = document.querySelectorAll('.project-card');
+    // ── 3. CARD SPOTLIGHT & 3D PERSPECTIVE TILT (Desktop Only) ──
+    const isDesktopPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-        projectCards.forEach(card => {
-            card.classList.add('tilt-active');
+    if (isDesktopPointer) {
+        const spotlightCards = document.querySelectorAll(
+            '.project-card, .pillar-card, .hero-telemetry-tile, .research-card, .ps-card, .hobby-card, .contact-card'
+        );
 
+        spotlightCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
 
-                const rotateX = ((y - centerY) / centerY) * -6; // Max 6deg
-                const rotateY = ((x - centerX) / centerX) * 6;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
 
-                requestAnimationFrame(() => {
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
-                });
+                // 3D Perspective Tilt on Project & Pillar Cards
+                if (card.classList.contains('project-card') || card.classList.contains('pillar-card')) {
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg
+                    const rotateY = ((x - centerX) / centerX) * 5;
+
+                    requestAnimationFrame(() => {
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+                    });
+                }
             });
 
             card.addEventListener('mouseleave', () => {
-                requestAnimationFrame(() => {
-                    card.style.transform = '';
-                    card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-                    setTimeout(() => {
-                        card.style.transition = '';
-                    }, 500);
-                });
+                if (card.classList.contains('project-card') || card.classList.contains('pillar-card')) {
+                    requestAnimationFrame(() => {
+                        card.style.transform = '';
+                        card.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                        setTimeout(() => {
+                            card.style.transition = '';
+                        }, 400);
+                    });
+                }
             });
         });
     }
 
-    // ══════════════════════════════════════════════════════════════════════
-    //  3. TELEMETRY COUNTER ANIMATIONS
-    // ══════════════════════════════════════════════════════════════════════
+    // ── 4. NUMERICAL TELEMETRY COUNTER INTERPOLATION ──
     const counterElements = document.querySelectorAll('[data-count]');
 
-    function animateCounter(el) {
-        const target = parseInt(el.getAttribute('data-count'), 10);
+    function runCounter(el) {
+        const target = parseFloat(el.getAttribute('data-count')) || 0;
         const suffix = el.getAttribute('data-suffix') || '';
-        const duration = 1200; // 1.2 seconds
+        const duration = 1200; // 1.2s duration
         const startTime = performance.now();
 
-        function step(currentTime) {
-            const elapsed = currentTime - startTime;
+        function step(now) {
+            const elapsed = now - startTime;
             const progress = Math.min(elapsed / duration, 1);
-
             // Ease-out cubic
             const eased = 1 - Math.pow(1 - progress, 3);
-            const currentValue = Math.round(eased * target);
+            const current = Math.round(eased * target);
 
-            el.textContent = currentValue + suffix;
+            el.textContent = current + suffix;
 
             if (progress < 1) {
                 requestAnimationFrame(step);
@@ -246,105 +139,192 @@ document.addEventListener('DOMContentLoaded', () => {
     const counterObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                animateCounter(entry.target);
+                runCounter(entry.target);
                 counterObserver.unobserve(entry.target);
             }
         });
-    }, {
-        threshold: 0.15
-    });
+    }, { threshold: 0.15 });
 
     counterElements.forEach(el => counterObserver.observe(el));
 
-    // ══════════════════════════════════════════════════════════════════════
-    //  3b. TERMINAL HUD TYPEWRITER (manifest.sh)
-    // ══════════════════════════════════════════════════════════════════════
+    // ── 5. TERMINAL HUD TYPEWRITER (manifest.sh) ──
     const terminalTyped = document.getElementById('terminalTyped');
     const terminalBody = document.getElementById('terminalBody');
     let terminalStarted = false;
 
-    const terminalCommands = [
-        'cat engineering_profile.json',
-        'echo "Status: Active"',
-        'ping systems.fowad.dev',
-        'cat engineering_profile.json'
+    const manifestCommands = [
+        'cat systems_manifest.json',
+        'yolo benchmark --weights yolov12n.pt',
+        './deploy_resqtech_command.sh',
+        'cat systems_manifest.json'
     ];
 
-    async function typeTerminalCommand(text, el) {
-        el.textContent = '';
-        for (let i = 0; i < text.length; i++) {
-            await new Promise(resolve => setTimeout(resolve, 45));
-            el.textContent += text[i];
-        }
-        await new Promise(resolve => setTimeout(resolve, 1500));
-    }
-
-    async function runTerminalLoop() {
-        if (terminalStarted) return;
+    async function runTerminalSequence() {
+        if (!terminalTyped || terminalStarted) return;
         terminalStarted = true;
 
-        for (let i = 0; i < terminalCommands.length; i++) {
-            await typeTerminalCommand(terminalCommands[i], terminalTyped);
+        for (let cmdIdx = 0; cmdIdx < manifestCommands.length; cmdIdx++) {
+            const cmd = manifestCommands[cmdIdx];
+            terminalTyped.textContent = '';
+
+            for (let i = 0; i < cmd.length; i++) {
+                await new Promise(r => setTimeout(r, 40));
+                terminalTyped.textContent += cmd[i];
+            }
+
+            if (cmdIdx < manifestCommands.length - 1) {
+                await new Promise(r => setTimeout(r, 1400));
+            }
         }
-        // Final state — keep the last command visible
-        terminalTyped.textContent = terminalCommands[terminalCommands.length - 1];
     }
 
-    if (terminalTyped && terminalBody) {
-        const terminalObserver = new IntersectionObserver((entries) => {
+    if (terminalBody) {
+        const termObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !terminalStarted) {
-                    runTerminalLoop();
-                    terminalObserver.unobserve(entry.target);
+                    runTerminalSequence();
+                    termObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.2 });
 
-        terminalObserver.observe(terminalBody);
+        termObserver.observe(terminalBody);
     }
 
-    // ── Cursor Glow Effect ──
-    const cursorGlow = document.getElementById('cursorGlow');
+    // ── 6. COPY DOSSIER & KEYBOARD SHORTCUTS ([C] key) ──
+    const copyDossierBtn = document.getElementById('copyDossierBtn');
+    const toastEl = document.getElementById('systemToast');
+    const toastMsg = document.getElementById('toastMessage');
+    let toastTimeout = null;
 
-    document.addEventListener('mousemove', (e) => {
-        requestAnimationFrame(() => {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
+    function showToast(msg) {
+        if (!toastEl) return;
+        if (toastMsg) toastMsg.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toastEl.classList.remove('show');
+        }, 2800);
+    }
+
+    function executeCopyDossier() {
+        const dossierPayload = `=== FOWAD ABRAR — ENGINEERING DOSSIER ===
+Role: Frontend Systems & Autonomous Tech Engineer
+Education: B.Sc. in CSE, United International University (Final Year)
+Experience: Frontend Developer Intern at Fazesoft
+Research: 6 Publications (YOLOv12 UAV Flood Rescue, Assistive Vision ML, IoT Smart Systems)
+Production: Shohay (shohay-bd.vercel.app), HomeNet BD (homenetbd.com)
+Core Stack: React 19, TypeScript, Next.js, Python, YOLOv12, PyTorch, C/C++, ESP32/Arduino
+GitHub: https://github.com/sodium10
+LinkedIn: https://www.linkedin.com/in/fowad-morshed-10112oo2/
+Email: fowadabrar@gmail.com
+Status: Open for Software Engineering, ML & Autonomous Systems Roles`;
+
+        navigator.clipboard.writeText(dossierPayload).then(() => {
+            showToast('✓ Engineering Dossier Copied to Clipboard');
+        }).catch(() => {
+            showToast('System Payload Ready: fowadabrar@gmail.com');
         });
+    }
+
+    if (copyDossierBtn) {
+        copyDossierBtn.addEventListener('click', executeCopyDossier);
+    }
+
+    // Keyboard shortcut handler: 'c' or 'C' triggers copy dossier
+    document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.key === 'c' || e.key === 'C') {
+            executeCopyDossier();
+        }
     });
 
-    // ── Smooth scroll for anchor links ──
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+    // ── 7. NAVBAR SCROLL EFFECT & ACTIVE LINK HIGHLIGHT ──
+    const navbar = document.getElementById('navbar');
+    const sections = document.querySelectorAll('.section, .hero');
+    const navLinks = document.querySelectorAll('.nav-link:not(.nav-link-cta)');
+
+    function onScroll() {
+        const scrollY = window.scrollY;
+
+        if (navbar) {
+            if (scrollY > 40) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }
+
+        const activePos = scrollY + 140;
+        sections.forEach(sec => {
+            const top = sec.offsetTop;
+            const height = sec.offsetHeight;
+            const id = sec.getAttribute('id');
+
+            if (activePos >= top && activePos < top + height) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
                 });
+            }
+        });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // ── 8. MOBILE NAV TOGGLE & ACCESSIBILITY ──
+    const navToggle = document.getElementById('navToggle');
+    const navLinksContainer = document.getElementById('navLinks');
+    const navBackdrop = document.getElementById('navBackdrop');
+
+    function toggleMobileMenu(forceClose = false) {
+        if (!navLinksContainer || !navToggle) return;
+        const isOpen = forceClose ? false : !navLinksContainer.classList.contains('active');
+
+        navToggle.classList.toggle('active', isOpen);
+        navLinksContainer.classList.toggle('active', isOpen);
+        if (navBackdrop) navBackdrop.style.display = isOpen ? 'block' : 'none';
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+        navToggle.setAttribute('aria-expanded', isOpen);
+    }
+
+    if (navToggle) {
+        navToggle.addEventListener('click', () => toggleMobileMenu());
+    }
+
+    if (navBackdrop) {
+        navBackdrop.addEventListener('click', () => toggleMobileMenu(true));
+    }
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                toggleMobileMenu(true);
             }
         });
     });
 
-    // ── Interactive Project Filter ──
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const filterableCards = document.querySelectorAll('.projects-grid .project-card');
+    // ── 9. WORKSPACE PROJECT FILTER BAR ──
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.projects-grid .project-card');
 
-    if (filterButtons.length > 0 && filterableCards.length > 0) {
-        filterButtons.forEach(btn => {
+    if (filterBtns.length > 0 && projectCards.length > 0) {
+        filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                filterButtons.forEach(b => b.classList.remove('active'));
+                filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
                 const filter = btn.getAttribute('data-filter');
 
-                filterableCards.forEach(card => {
+                projectCards.forEach(card => {
                     const category = card.getAttribute('data-category');
                     if (filter === 'all' || category === filter) {
                         card.classList.remove('filter-hidden');
                         card.style.opacity = '0';
-                        card.style.transform = 'translateY(12px)';
+                        card.style.transform = 'translateY(14px)';
                         setTimeout(() => {
                             card.style.transition = 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
                             card.style.opacity = '1';
@@ -358,43 +338,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── Research PDF Modal Viewer ──
+    // ── 10. PDF RESEARCH VIEWER MODAL ──
     const pdfModal = document.getElementById('pdfModal');
     const pdfModalFrame = document.getElementById('pdfModalFrame');
     const pdfModalTitle = document.getElementById('pdfModalTitle');
     const pdfExternalBtn = document.getElementById('pdfExternalBtn');
     const pdfDownloadBtn = document.getElementById('pdfDownloadBtn');
     const pdfModalClose = document.getElementById('pdfModalClose');
+    const pdfModalBackdrop = document.getElementById('pdfModalBackdrop');
     const pdfModalLoading = document.getElementById('pdfModalLoading');
-    const openPdfButtons = document.querySelectorAll('.open-pdf-modal-btn');
+    const openPdfBtns = document.querySelectorAll('.open-pdf-modal-btn');
 
-    function openPdfReader(pdfUrl, title) {
+    function openPdf(url, title) {
         if (!pdfModal || !pdfModalFrame) return;
 
-        pdfModalTitle.textContent = title || 'Research Paper';
-        pdfExternalBtn.setAttribute('href', pdfUrl);
-        pdfDownloadBtn.setAttribute('href', pdfUrl);
-        pdfDownloadBtn.setAttribute('download', pdfUrl.split('/').pop());
-
-        // Show loading state
-        if (pdfModalLoading) {
-            pdfModalLoading.classList.remove('hidden');
+        if (pdfModalTitle) pdfModalTitle.textContent = title || 'Research Publication';
+        if (pdfExternalBtn) pdfExternalBtn.setAttribute('href', url);
+        if (pdfDownloadBtn) {
+            pdfDownloadBtn.setAttribute('href', url);
+            pdfDownloadBtn.setAttribute('download', url.split('/').pop());
         }
 
-        // Set iframe source with zoom and toolbar parameters
-        pdfModalFrame.src = `${pdfUrl}#toolbar=1&view=FitH`;
-        
+        if (pdfModalLoading) pdfModalLoading.classList.remove('hidden');
+
+        pdfModalFrame.src = `${url}#toolbar=1&view=FitH`;
         pdfModalFrame.onload = () => {
-            if (pdfModalLoading) {
-                pdfModalLoading.classList.add('hidden');
-            }
+            if (pdfModalLoading) pdfModalLoading.classList.add('hidden');
         };
 
-        // Fallback loading hide after 1.5s
         setTimeout(() => {
-            if (pdfModalLoading) {
-                pdfModalLoading.classList.add('hidden');
-            }
+            if (pdfModalLoading) pdfModalLoading.classList.add('hidden');
         }, 1500);
 
         pdfModal.classList.add('active');
@@ -402,98 +375,122 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = 'hidden';
     }
 
-    function closePdfReader() {
+    function closePdf() {
         if (!pdfModal) return;
         pdfModal.classList.remove('active');
         pdfModal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
-        if (pdfModalFrame) {
-            pdfModalFrame.src = '';
-        }
+        if (pdfModalFrame) pdfModalFrame.src = '';
     }
 
-    if (openPdfButtons.length > 0) {
-        openPdfButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const pdfUrl = btn.getAttribute('data-pdf');
-                const title = btn.getAttribute('data-title');
-                if (pdfUrl) {
-                    openPdfReader(pdfUrl, title);
-                }
+    openPdfBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const url = btn.getAttribute('data-pdf');
+            const title = btn.getAttribute('data-title');
+            if (url) openPdf(url, title);
+        });
+    });
+
+    if (pdfModalClose) pdfModalClose.addEventListener('click', closePdf);
+    if (pdfModalBackdrop) pdfModalBackdrop.addEventListener('click', closePdf);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && pdfModal && pdfModal.classList.contains('active')) {
+            closePdf();
+        }
+    });
+
+    // ── 11. AMBIENT CURSOR GLOW ──
+    const cursorGlow = document.getElementById('cursorGlow');
+    if (cursorGlow && isDesktopPointer) {
+        document.addEventListener('mousemove', (e) => {
+            requestAnimationFrame(() => {
+                cursorGlow.style.left = `${e.clientX}px`;
+                cursorGlow.style.top = `${e.clientY}px`;
             });
         });
     }
 
-    if (pdfModalClose) {
-        pdfModalClose.addEventListener('click', closePdfReader);
-    }
-
-    if (pdfModal) {
-        pdfModal.addEventListener('click', (e) => {
-            if (e.target === pdfModal) {
-                closePdfReader();
+    // ── 12. SMOOTH ANCHOR LINK SCROLLING ──
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#' || targetId === '') return;
+            const targetEl = document.querySelector(targetId);
+            if (targetEl) {
+                e.preventDefault();
+                targetEl.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
         });
-    }
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && pdfModal && pdfModal.classList.contains('active')) {
-            closePdfReader();
-        }
     });
 
-    // ══════════════════════════════════════════════════════════════════════
-    //  4. SUBTLE NEURAL/LIDAR CANVAS BACKGROUND
-    // ══════════════════════════════════════════════════════════════════════
+    // ── 13. LIDAR & NEURAL MESH CANVAS ENGINE ──
     const canvas = document.getElementById('neuralCanvas');
+    const diagFpsEl = document.getElementById('diagFps');
+
     if (canvas) {
         const ctx = canvas.getContext('2d');
         const dpr = window.devicePixelRatio || 1;
         let particles = [];
-        let animFrameId = null;
+        let animId = null;
+        let lastFrameTime = performance.now();
+        let frameCount = 0;
+        let fpsTimer = performance.now();
 
-        function getParticleCount() {
-            return window.innerWidth < 768 ? 30 : 80;
+        function getDensity() {
+            return window.innerWidth < 768 ? 28 : 75;
         }
 
-        function resizeCanvas() {
+        function setupCanvasSize() {
             canvas.width = window.innerWidth * dpr;
             canvas.height = window.innerHeight * dpr;
-            canvas.style.width = window.innerWidth + 'px';
-            canvas.style.height = window.innerHeight + 'px';
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
             ctx.scale(dpr, dpr);
         }
 
-        function createParticles() {
-            const count = getParticleCount();
+        function initParticles() {
+            const count = getDensity();
             particles = [];
             for (let i = 0; i < count; i++) {
                 particles.push({
                     x: Math.random() * window.innerWidth,
                     y: Math.random() * window.innerHeight,
-                    vx: (Math.random() - 0.5) * 0.3,
-                    vy: (Math.random() - 0.5) * 0.3,
-                    radius: Math.random() * 1.5 + 0.5,
-                    opacity: Math.random() * 0.5 + 0.1
+                    vx: (Math.random() - 0.5) * 0.35,
+                    vy: (Math.random() - 0.5) * 0.35,
+                    radius: Math.random() * 1.5 + 0.6,
+                    opacity: Math.random() * 0.45 + 0.15
                 });
             }
         }
 
-        function drawParticles() {
+        function renderMesh(now) {
             ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-            const connectionDistance = window.innerWidth < 768 ? 100 : 150;
+            // FPS Diagnostic Calculation
+            frameCount++;
+            if (now - fpsTimer >= 1000) {
+                const currentFps = Math.round((frameCount * 1000) / (now - fpsTimer));
+                if (diagFpsEl) diagFpsEl.textContent = currentFps;
+                frameCount = 0;
+                fpsTimer = now;
+            }
 
-            // Draw connections
+            const connectDist = window.innerWidth < 768 ? 95 : 140;
+
+            // Draw Connection Lines
             for (let i = 0; i < particles.length; i++) {
                 for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
 
-                    if (dist < connectionDistance) {
-                        const alpha = (1 - dist / connectionDistance) * 0.12;
+                    if (dist < connectDist) {
+                        const alpha = (1 - dist / connectDist) * 0.09;
                         ctx.beginPath();
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
@@ -504,62 +501,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // Draw particles
+            // Draw Nodes
             for (const p of particles) {
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(56, 189, 248, ${p.opacity})`;
+                ctx.fillStyle = `rgba(0, 242, 254, ${p.opacity})`;
                 ctx.fill();
 
-                // Move particle
                 p.x += p.vx;
                 p.y += p.vy;
 
-                // Wrap around edges
+                // Screen Wrap
                 if (p.x < 0) p.x = window.innerWidth;
                 if (p.x > window.innerWidth) p.x = 0;
                 if (p.y < 0) p.y = window.innerHeight;
                 if (p.y > window.innerHeight) p.y = 0;
             }
 
-            animFrameId = requestAnimationFrame(drawParticles);
+            animId = requestAnimationFrame(renderMesh);
         }
 
-        // Debounced resize handler
-        let resizeTimer;
-        function handleResize() {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (animFrameId) cancelAnimationFrame(animFrameId);
-                resizeCanvas();
-                createParticles();
-                drawParticles();
+        // Debounced Resize Handler
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (animId) cancelAnimationFrame(animId);
+                setupCanvasSize();
+                initParticles();
+                renderMesh(performance.now());
             }, 200);
+        }, { passive: true });
+
+        // Reduced Motion Check
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (!reduceMotion.matches) {
+            setupCanvasSize();
+            initParticles();
+            renderMesh(performance.now());
         }
 
-        window.addEventListener('resize', handleResize, { passive: true });
-
-        // Respect reduced motion
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-        if (!prefersReducedMotion.matches) {
-            resizeCanvas();
-            createParticles();
-            drawParticles();
-        }
-
-        prefersReducedMotion.addEventListener('change', (e) => {
+        reduceMotion.addEventListener('change', (e) => {
             if (e.matches) {
-                if (animFrameId) cancelAnimationFrame(animFrameId);
+                if (animId) cancelAnimationFrame(animId);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             } else {
-                resizeCanvas();
-                createParticles();
-                drawParticles();
+                setupCanvasSize();
+                initParticles();
+                renderMesh(performance.now());
             }
         });
     }
-
-    // ── Initial check for elements already in view ──
-    handleNavScroll();
-    updateActiveNav();
 });
