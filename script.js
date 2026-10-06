@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── 1. DYNAMIC ENGINEERING ROLE CYCLER ──
     const typewriterEl = document.getElementById('typewriter');
     const rolePhrases = [
-        'Junior Frontend Software Engineer',
+        'Junior Frontend Software Engineer at Fazesoft',
         'Autonomous Systems & Drone Telemetry',
         'Computer Vision & Edge ML (YOLO/PyTorch)',
         '3D CAD & Hardware Prototyping (Fusion 360)'
